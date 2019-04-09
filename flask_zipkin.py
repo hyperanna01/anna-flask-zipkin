@@ -9,6 +9,7 @@ from flask import current_app
 from flask import g
 from flask import request
 from py_zipkin import zipkin
+from py_zipkin import Encoding
 
 
 __version_info__ = ('0', '0', '4')
@@ -34,6 +35,8 @@ class Zipkin(object):
         self._transport_handler = None
         self._transport_exception_handler = None
         self._timeout = timeout
+        self._header = {'Content-Type': 'application/json'}
+        self._encoding = Encoding.V2_JSON
 
     def default_exception_handler(self, ex):
         pass
@@ -44,7 +47,7 @@ class Zipkin(object):
             return requests.post(
                 self.app.config.get('ZIPKIN_DSN'),
                 data=encoded_span,
-                headers={'Content-Type': 'application/x-thrift'},
+                headers=self._header,
                 timeout=self._timeout,
             )
         except Exception as e:
@@ -102,7 +105,8 @@ class Zipkin(object):
             span_name='{0}.{1}'.format(request.endpoint, request.method),
             transport_handler=handler,
             sample_rate=self._sample_rate,
-            zipkin_attrs=zipkin_attrs
+            zipkin_attrs=zipkin_attrs,
+            encoding=self._encoding
         )
         g._zipkin_span = span
         g._zipkin_span.start()
