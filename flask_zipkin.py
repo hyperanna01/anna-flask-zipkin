@@ -12,11 +12,11 @@ from py_zipkin import zipkin
 from py_zipkin import Encoding
 
 
-__version_info__ = ('0', '0', '4')
+__version_info__ = ('0', '0', '1')
 __version__ = '.'.join(__version_info__)
-__author__ = 'killpanda'
+__author__ = 'Hyper Anna'
 __license__ = 'BSD'
-__copyright__ = '(c) 2016 by killpanda'
+__copyright__ = '(c) 2019 by Hyper Anna'
 __all__ = ['Zipkin']
 
 

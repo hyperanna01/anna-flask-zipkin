@@ -9,12 +9,12 @@ version_line = [line for line in open(module_path)
 __version__ = '.'.join(eval(version_line.split('__version_info__ = ')[-1]))
 
 setup(
-    name='Flask-Zipkin',
+    name='Anna-Flask-Zipkin',
     version=__version__,
-    url='',
+    url='https://github.com/hyperanna01/anna-flask-zipkin',
     license='BSD',
-    author='killpanda',
-    author_email='angus@killpanda.de',
+    author='Hyper Anna',
+    author_email='anna@hyperanna.com',
     description='An zipkin extension for Flask based on py_zipkin.',
     py_modules=['flask_zipkin'],
     zip_safe=False,
