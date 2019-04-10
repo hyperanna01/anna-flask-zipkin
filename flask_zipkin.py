@@ -12,7 +12,7 @@ from py_zipkin import zipkin
 from py_zipkin import Encoding
 
 
-__version_info__ = ('0', '0', '2')
+__version_info__ = ('0', '0', '3')
 __version__ = '.'.join(__version_info__)
 __author__ = 'Hyper Anna'
 __license__ = 'BSD'
@@ -101,7 +101,7 @@ class Zipkin(object):
         handler = self._transport_handler or self.default_handler
 
         span = zipkin.zipkin_span(
-            service_name=self.app.name,
+            service_name=self.app.config.get('ZIPKIN_SERVICE_NAME', self.app.name),
             span_name='{0}.{1}'.format(request.endpoint, request.method),
             transport_handler=handler,
             sample_rate=self._sample_rate,
