@@ -12,7 +12,7 @@ from py_zipkin import zipkin
 from py_zipkin import Encoding
 
 
-__version_info__ = ('0', '0', '1')
+__version_info__ = ('0', '0', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'Hyper Anna'
 __license__ = 'BSD'
@@ -87,7 +87,7 @@ class Zipkin(object):
         headers = request.headers
         trace_id = headers.get('X-B3-TraceId') or self._gen_random_id()
         parent_span_id = headers.get('X-B3-ParentSpanId')
-        is_sampled = str(headers.get('X-B3-Sampled') or '0') == '1'
+        is_sampled = str(headers.get('X-B3-Sampled') or '1') == '1'
         flags = headers.get('X-B3-Flags')
 
         zipkin_attrs = zipkin.ZipkinAttrs(
