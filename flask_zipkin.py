@@ -1,7 +1,7 @@
 import logging
 import random
 import string
-
+import socket
 import flask
 import requests
 from flask import _app_ctx_stack
@@ -12,7 +12,8 @@ from py_zipkin import zipkin
 from py_zipkin import Encoding
 
 
-__version_info__ = ('0', '0', '3')
+
+__version_info__ = ('0', '0', '4')
 __version__ = '.'.join(__version_info__)
 __author__ = 'Hyper Anna'
 __license__ = 'BSD'
@@ -110,6 +111,8 @@ class Zipkin(object):
         )
         g._zipkin_span = span
         g._zipkin_span.start()
+        default_tags = self.app.config.get('ZIPKIN_TAGS', {'env': 'Undefined', 'hostname': socket.gethostname()})
+        self.update_tags(default_tags)
 
     def exempt(self, view):
         view_location = '{0}.{1}'.format(view.__module__, view.__name__)
@@ -129,17 +132,12 @@ class Zipkin(object):
             return dict()
         return zipkin.create_http_headers_for_new_span()
 
-    def logging(self, **kwargs):
-        logging.warning('This method has been depreated, '
-                        'please call `update_tags` instead.')
-        self.update_tags(**kwargs)
 
-    def update_tags(self, **kwargs):
+    def update_tags(self, tags):
         if all([hasattr(g, '_zipkin_span'),
-                g._zipkin_span,
-                g._zipkin_span.logging_context]):
-            g._zipkin_span.logging_context.binary_annotations_dict.update(
-                kwargs)
+                g._zipkin_span]):
+            g._zipkin_span.update_binary_annotations(
+                tags)
 
 
 def child_span(f):
