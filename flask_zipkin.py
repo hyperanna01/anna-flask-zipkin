@@ -112,7 +112,7 @@ class Zipkin(object):
         )
         g._zipkin_span = span
         g._zipkin_span.start()
-        default_tags = self.app.config.get('ZIPKIN_TAGS', {'env': 'Undefined', 'hostname': socket.gethostname()})
+        default_tags = self.app.config.get('ZIPKIN_TAGS', {'hostname': socket.gethostname()})
         self.update_tags(default_tags)
 
     def exempt(self, view):
